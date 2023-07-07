@@ -1,0 +1,67 @@
+u:L_Area_IFSp:81 u:L_Area_44:74 L_Area_45:75
+
+#makes a mask from some atlas defined region
+whereami -mask_atlas_region MNI_Glasser_HCP_v1.0:L_Area__IFSa -prefix IFGa
+whereami -mask_atlas_region MNI_Glasser_HCP_v1.0:L_Area_44 -prefix 44
+whereami -mask_atlas_region MNI_Glasser_HCP_v1.0:L_Area_45 -prefix 45
+
+#combines the three individual masks to make one
+3dcalc -a IFGa+tlrc. -b 44+tlrc. -c 45+tlrc. -expr '1*a + 2*b + 3*c' -prefix lifg
+
+#resamples mask to the statistics file resolution
+3dresample -master stats.ST17+tlrc. -prefix LIFGSamp.nii -input lifg+tlrc.
+
+#converts from afni to nifti format for next step
+foreach subj (02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22)
+
+3dAFNItoNIFTI 'stats.ST'$subj'+tlrc.[46]'
+
+end
+
+#takes x most active moxels from within mask
+foreach subj (02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22)
+
+mri_binarize --i stats.ST$subj.nii --o ConfVoxels$subj.nii --mask LIFGSamp.nii --pct 10
+
+end
+
+524 mask volume
+10% is 52.4
+
+#makes a single file with each subjects average beta values (for each voxel in brain) for each condition
+#run for eachperson (can make loop)
+
+        3dbucket -aglueto SImagine_betas+tlrc.HEAD 'CO22.results/stats.CO22+tlrc[7]'
+        3dbucket -aglueto DImagine_betas+tlrc.HEAD 'CO22.results/stats.CO22+tlrc[1]'
+        3dbucket -aglueto SLearn_betas+tlrc.HEAD 'CO22.results/stats.CO22+tlrc[10]'
+        3dbucket -aglueto DLearn_betas+tlrc.HEAD 'CO22.results/stats.CO22+tlrc[4]'
+
+#convert "most active voxels" back to afni
+foreach subj (02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22)
+
+3dcopy ConfVoxels$subj.nii ConfVoxels$subj+tlrc
+
+end
+
+#give each participants average beta value across the entire roi mask
+#bash
+array=(03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22)
+array2=(0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19)
+
+for index in ${!array[*]}; do 
+3dmaskave -quiet -mask ConfVoxels${array[$index]}+tlrc. 'SLearn_betas+tlrc.'[${array2[$index]}]'' >> SLearn.txt
+3dmaskave -quiet -mask ConfVoxels${array[$index]}+tlrc. 'DLearn_betas+tlrc.'[${array2[$index]}]'' >> DLearn.txt
+3dmaskave -quiet -mask ConfVoxels${array[$index]}+tlrc. 'SImagine_betas+tlrc.'[${array2[$index]}]'' >> SImagine.txt
+3dmaskave -quiet -mask ConfVoxels${array[$index]}+tlrc. 'DImagine_betas+tlrc.'[${array2[$index]}]'' >> DImagine.txt
+done
+
+
+
+#########################
+
+3dROIMaker                     \
+       -inset stats.ST02+tlrc.'[46]'    \
+       -mask LIFGSamp+tlrc. \
+       -thresh 0.0                 \
+       -prefix Conf02             \
+       -only_some_top 50                 
