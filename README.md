@@ -12,7 +12,7 @@ As described in the dissertation, I show a 'change type' difference in brain act
 
 [Dissertation Defense Slides](https://github.com/zekves/pronoun-pfc/blob/main/Diss.pdf)
 
-[Cognitive Neuroscience Society 2020: Interplay of episodic and semantic memory in repeat object reference](https://github.com/zekves/pronoun-pfc/blob/main/Ekves_CNS20.pdf)
+[Poster: Cognitive Neuroscience Society 2020: Interplay of episodic and semantic memory in repeat object reference](https://github.com/zekves/pronoun-pfc/blob/main/Ekves_CNS20.pdf)
 
-[Cognitive Neuroscience Society 2018: Instantiating new objects into the discourse (early related work using functional connectivity)](https://github.com/zekves/pronoun-pfc/blob/main/Ekves_CNS18_Final.pdf)
+[Poster: Cognitive Neuroscience Society 2018: Instantiating new objects into the discourse (early related work using functional connectivity)](https://github.com/zekves/pronoun-pfc/blob/main/Ekves_CNS18_Final.pdf)
 
