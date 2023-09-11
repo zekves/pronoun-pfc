@@ -10,3 +10,5 @@ As described in the dissertation, I show a 'change type' difference in brain act
 - ROIStats.txt has functions used to generate an anatomical brain mask to use in ROI analysis and functions to extract brain activation from that mask.
 - FullHPCStats.R script conducts significance testing of the brain data at the group level and generates a bar plot.
 
+[Cognitive Neuroscience Society 2018 Poster on early related work: Instantiating new objects into the discourse](https://github.com/zekves/pronoun-pfc/blob/main/Ekves_CNS18_Final.pdf)
+[Dissertation Defense Slides](https://github.com/zekves/pronoun-pfc/blob/main/Diss.pdf)
